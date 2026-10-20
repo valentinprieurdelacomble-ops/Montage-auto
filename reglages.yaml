@@ -79,6 +79,29 @@ animations:
   chiffre_geant: true     # fait apparaître en grand un chiffre important
   couleur_fond_titre: "#111318"
 
+# --- Inserts animés (cartes en motion design) ----------------------------
+# Pendant un insert, une carte animée occupe le centre et ton visage passe
+# dans une bulle ronde en haut. Le reste du temps : visage plein écran.
+inserts:
+  actif: true             # false = aucune carte animée
+  nombre_max: 3           # 2 à 3 conseillé pour une vidéo d'1 minute
+  duree_min: 3.0          # durée d'un insert (secondes)
+  duree_max: 5.0
+  ecart_min: 6.0          # secondes minimum entre deux inserts
+  part_max_video: 0.20    # au plus 20 % du temps en insert (ton visage reste 80 % du temps)
+  debut_min: 2.5          # jamais d'insert pendant l'accroche du début
+  relire_storyboard: true # la 1re fois, s'arrête pour que tu relises storyboard.yaml
+  bulle_taille: 0.34      # diamètre de la bulle du visage (0.34 = 34 % de la largeur)
+  bulle_position: 0.16    # hauteur du centre de la bulle (0 = tout en haut)
+  bulle_cadrage: 0.60     # part de l'image mise dans la bulle (plus petit = visage plus gros)
+  bulle_visage: 0.34      # hauteur de ton visage dans la vidéo brute (0 = haut, 0.5 = milieu)
+  bulle_contour: 8        # épaisseur du contour bleu (pixels)
+  transition: 0.35        # durée du fondu d'entrée et de sortie (secondes)
+  whoosh: true            # petit whoosh discret à l'apparition de la carte
+  signature: "Valentin de la Comble"   # auteur affiché quand la citation est de toi
+  processus: auto         # nombre d'images calculées en même temps (auto = adapté au PC)
+  navigateur: ""          # laisse vide (Remotion télécharge son navigateur tout seul)
+
 # --- Son de la voix ----------------------------------------------------------
 audio:
   volume_cible_lufs: -14  # standard Instagram / TikTok
@@ -92,5 +115,5 @@ export:
   hauteur: 1920
   fps: 30
   qualite_crf: 18         # 18 = très haute qualité (plus petit = meilleur et plus lourd)
-  preset: slow            # slow = meilleure compression ; "medium" = plus rapide
+  preset: medium          # medium = bon pour un PC modeste ; "slow" = un peu plus compact mais 2x plus lent
   debit_audio: 192k

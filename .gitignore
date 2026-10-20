@@ -6,3 +6,4 @@ a_monter/*
 montees/*
 !montees/.gitkeep
 *.en_cours.mp4
+apercus/

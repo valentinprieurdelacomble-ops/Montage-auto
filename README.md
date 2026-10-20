@@ -13,7 +13,10 @@ et tu récupères dans `montees/` une vidéo prête pour Instagram, TikTok et Yo
 6. **1 ou 2 animations** : titre d'accroche au début et/ou chiffre géant.
 7. **Son de la voix normalisé** (-14 LUFS, sans saturation).
 8. **Export** MP4 H.264, 1080x1920, 30 images/s.
-9. **Contrôle qualité automatique** : format, durée, synchro, volume, écrans noirs, et une planche d'images à vérifier.
+9. **Inserts animés** (2 à 3 par minute) : une carte animée occupe le centre pendant 3 à 5 s, ton visage passe
+    dans une bulle ronde à contour bleu en haut, puis retour plein écran en fondu. 5 modèles : citation,
+    avant/après, schéma en 3 étapes, liste, jauge/chiffre.
+10. **Contrôle qualité automatique** : format, durée, synchro, volume, écrans noirs, et une planche d'images à vérifier.
 
 ## Installation (une seule fois)
 
@@ -46,6 +49,29 @@ avant de te dire qu'elle est prête.
 .venv\Scripts\python monter.py ma_video.mov --reprendre           (refait la vidéo depuis le plan)
 ```
 
+## Les inserts animés et le storyboard
+
+Après la transcription, le système repère les moments à animer (une énumération « un, deux, trois »,
+une méthode « d'abord, ensuite, enfin », un « au lieu de dire… dis… », un pourcentage, une citation)
+et écrit `travail/<nom>/storyboard.yaml`. **La première fois, le montage s'arrête** pour que tu le relises :
+ouvre-le avec le Bloc-notes, change les textes ou les temps, supprime un bloc pour enlever un insert,
+puis relance `monter.bat`.
+
+**Ton texte aide** : si tu poses ton script à côté de la vidéo (`a_monter/ma_video.txt`, ou `a_monter/script.txt`),
+le système s'en sert (meilleure orthographe, meilleurs moments). Tu peux même imposer un insert en écrivant
+une balise au début d'un paragraphe :
+
+```
+[citation: Nicolas Boileau] Comme disait Boileau, « ce que l'on conçoit bien s'énonce clairement ».
+[avant-après] Au lieu de dire « je vais essayer », dis « je vais le faire ».
+[étapes: Ta méthode] D'abord, trouve ton message. Ensuite, construis ton plan. Enfin, répète à voix haute.
+[liste: 3 règles] Un, ralentis. Deux, regarde ton public. Trois, fais une pause.
+[jauge] 80 % de ton impact vient de ta voix.
+```
+
+Les cartes sont fabriquées par **Remotion** (`remotion/`), puis posées sur la vidéo par FFmpeg.
+Une carte déjà fabriquée et inchangée est réutilisée : relancer après une petite modification est rapide.
+
 ## Régler le style
 
 Tout est dans **`reglages.yaml`** (ouvre-le avec le Bloc-notes) : taille des sous-titres, intensité
@@ -70,13 +96,13 @@ des zooms, volume des bruitages, durée minimale des blancs coupés, etc. Chaque
 
 ## Durée de traitement
 
-Sur un PC sans carte graphique NVIDIA, compte environ 2 à 4 minutes pour une vidéo d'une minute
-(surtout la transcription). Avec une carte NVIDIA, c'est beaucoup plus rapide.
+Sur un PC sans carte graphique NVIDIA, compte environ 3 à 6 minutes pour une vidéo d'une minute
+(surtout la transcription, puis les cartes animées). Si c'est trop long : `transcription.modele: small`. Avec une carte NVIDIA, c'est beaucoup plus rapide.
 
-## Pourquoi FFmpeg plutôt que Remotion
+## Qui fait quoi
 
-Remotion est excellent pour des animations complexes, mais il demande Node.js et un navigateur caché
-pour fabriquer chaque image : plus lent et plus de pièces qui peuvent casser sous Windows.
-Tout ce qui est demandé ici (sous-titres animés, zooms, titres, bruitages) se fait très bien avec
-FFmpeg seul, en une passe, avec une seule installation. Si un jour tu veux des animations plus
-riches (graphiques animés, logos), on pourra ajouter Remotion pour ces éléments-là.
+- **FFmpeg** : coupes, zooms, sous-titres, son, assemblage final (rapide).
+- **Remotion** : uniquement les cartes animées. Il dessine chaque image dans un navigateur invisible,
+  ce qui est plus lent ; c'est pourquoi il ne fabrique que la carte (pas la vidéo entière), sur fond
+  transparent, et réutilise les cartes déjà faites. Sur un PC modeste, compte environ 10 à 40 secondes par carte.
+- Remotion est gratuit pour un créateur indépendant (licence payante seulement pour les entreprises de plus de 3 personnes).

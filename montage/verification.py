@@ -50,6 +50,10 @@ def verifier(sortie: Path, plan: dict, reglages: dict, dossier_travail: Path) ->
     noirs = res.stderr.count("black_start")
     controle(noirs == 0, "aucun écran noir", f"{noirs} passage(s) noir(s) détecté(s)")
 
+    if plan.get("inserts"):
+        part = sum(i["duree"] for i in plan["inserts"]) / max(1e-6, attendu)
+        controle(part <= 0.25, f"{len(plan['inserts'])} insert(s) animé(s), visage plein écran {100 - 100 * part:.0f} % du temps",
+                 f"inserts trop présents : visage plein écran seulement {100 - 100 * part:.0f} % du temps")
     planche = planche_contact(sortie, plan, dossier_travail, ex["fps"])
     return {"pret": not problemes, "ok": ok, "problemes": problemes, "planche": str(planche),
             "volume_lufs": lufs, "crete_db": crete, "duree": dv}
@@ -59,6 +63,9 @@ def planche_contact(sortie: Path, plan: dict, dossier_travail: Path, fps: int) -
     """Image avec 12 vignettes prises aux moments clés (titre, zooms, mots-clés…)."""
     duree = plan["duree_finale"]
     temps = [0.6]
+    # le milieu et la fin de chaque insert animé (carte entièrement construite)
+    for ins in plan.get("inserts", []):
+        temps += [ins["debut"] + ins["duree"] * 0.45, ins["debut"] + ins["duree"] - 0.5]
     temps += [(z["debut"] + z["fin"]) / 2 for z in plan.get("zooms", [])[:4]]
     temps += [a["debut"] + 0.5 for a in plan.get("animations", []) if a["type"] == "chiffre"]
     cles = [m["debut"] + 0.15 for m in plan["mots"] if m["mot_cle"]]

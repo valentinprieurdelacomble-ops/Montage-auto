@@ -1,0 +1,18 @@
+{
+  "name": "montage-inserts",
+  "private": true,
+  "description": "Inserts animés (cartes) du montage automatique, rendus avec Remotion",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.ts"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.530",
+    "@remotion/cli": "4.0.530",
+    "@remotion/fonts": "4.0.530",
+    "@remotion/renderer": "4.0.530",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "remotion": "4.0.530"
+  }
+}

@@ -8,6 +8,8 @@ from pathlib import Path
 
 from .analyse import construire_plan
 from .coupes import calculer_segments
+from .inserts import (appliquer_au_plan, ecrire_storyboard, fabriquer_cartes, geometrie, lire_storyboard,
+                      proposer, trouver_script)
 from .outils import RACINE, ErreurMontage, attention, etape, info, sonder
 from .rendu import rendre
 from .transcription import charger_transcription_fournie, extraire_audio_16k, transcrire
@@ -21,7 +23,8 @@ def nom_propre(p: Path) -> str:
 
 
 def monter(source: Path, reglages: dict, *, analyse_seulement=False, reprendre=False,
-           titre: str | None = None, transcription: Path | None = None) -> dict:
+           titre: str | None = None, transcription: Path | None = None, nouveau_storyboard=False,
+           sans_pause=False) -> dict:
     debut = time.time()
     d = reglages["dossiers"]
     nom = nom_propre(source)
@@ -67,11 +70,41 @@ def monter(source: Path, reglages: dict, *, analyse_seulement=False, reprendre=F
         info(f"{len(plan['zooms'])} zooms, {sum(m['mot_cle'] for m in plan['mots'])} mots-clés en bleu, "
              f"{len(plan['sons'])} bruitages, {len(plan['animations'])} animation(s)")
         info(f"Plan enregistré : {chemin_plan.relative_to(RACINE)}")
+
+    # ---- Storyboard des inserts animés ----
+    r_ins = reglages.get("inserts", {})
+    chemin_sb = travail / "storyboard.yaml"
+    inserts_choisis: list[dict] = []
+    if r_ins.get("actif", False):
+        nouveau = nouveau_storyboard or not chemin_sb.exists()
+        if nouveau:
+            etape("Storyboard : choix des moments à animer")
+            script = trouver_script(source)
+            if script:
+                info(f"Je m'appuie sur ton texte : {script.name}")
+            proposes = proposer(plan, reglages, script.read_text(encoding="utf-8") if script else None)
+            ecrire_storyboard(chemin_sb, proposes, plan, source.name)
+            for ins in proposes:
+                info(f"{ins['debut']:5.1f} s  {ins['type']:<11} « {ins.get('phrase_dite', '')[:55]} »")
+            if not proposes:
+                info("Aucun moment évident à animer : vidéo sans insert (tu peux en ajouter dans le storyboard).")
+            info(f"Storyboard : {chemin_sb.relative_to(RACINE)}")
         if analyse_seulement:
-            return {"plan": str(chemin_plan)}
+            return {"plan": str(chemin_plan), "storyboard": str(chemin_sb), "pret": True}
+        if nouveau and r_ins.get("relire_storyboard", True) and not sans_pause:
+            print(f"\n✋ Relis (et modifie si tu veux) le storyboard : {chemin_sb.relative_to(RACINE)}\n"
+                  "   puis relance le montage pour fabriquer la vidéo.")
+            return {"storyboard": str(chemin_sb), "pret": True, "pause": True}
+        inserts_choisis = lire_storyboard(chemin_sb, plan, reglages)
+    elif analyse_seulement:
+        return {"plan": str(chemin_plan), "pret": True}
 
     etape("4/4 Fabrication de la vidéo")
-    rendre(source, sonde, plan, reglages, travail, sortie)
+    cartes = []
+    if inserts_choisis:
+        plan = appliquer_au_plan(plan, inserts_choisis, reglages)
+        cartes = fabriquer_cartes(inserts_choisis, geometrie(reglages), reglages, travail / "cartes")
+    rendre(source, sonde, plan, reglages, travail, sortie, inserts_choisis, cartes)
 
     etape("Contrôle qualité")
     rapport = verifier(sortie, plan, reglages, travail)

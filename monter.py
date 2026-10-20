@@ -6,6 +6,7 @@ Exemples :
   python monter.py ma_video.mov --titre "3 ERREURS À ÉVITER"
   python monter.py ma_video.mov --analyse-seulement   (prépare plan.json sans fabriquer la vidéo)
   python monter.py ma_video.mov --reprendre           (refait la vidéo à partir de plan.json)
+  python monter.py ma_video.mov --nouveau-storyboard  (repropose les inserts animés)
 """
 from __future__ import annotations
 
@@ -38,6 +39,8 @@ def main() -> int:
     ap.add_argument("--analyse-seulement", action="store_true", help="prépare plan.json sans faire la vidéo")
     ap.add_argument("--reprendre", action="store_true", help="refait la vidéo à partir de plan.json")
     ap.add_argument("--transcription", type=Path, help="fichier JSON de mots déjà transcrits")
+    ap.add_argument("--nouveau-storyboard", action="store_true", help="refait le storyboard des inserts")
+    ap.add_argument("--sans-pause", action="store_true", help="ne s'arrête pas pour relire le storyboard")
     ap.add_argument("--forcer", action="store_true", help="refait même les vidéos déjà montées")
     ap.add_argument("--reglages", type=Path, help="autre fichier de réglages")
     args = ap.parse_args()
@@ -57,7 +60,8 @@ def main() -> int:
         echecs = 0
         for v in videos:
             rapport = monter(v, reglages, analyse_seulement=args.analyse_seulement,
-                             reprendre=args.reprendre, titre=args.titre, transcription=args.transcription)
+                             reprendre=args.reprendre, titre=args.titre, transcription=args.transcription,
+                             nouveau_storyboard=args.nouveau_storyboard, sans_pause=args.sans_pause)
             echecs += 0 if rapport.get("pret", True) else 1
         return 1 if echecs else 0
     except ErreurMontage as e:

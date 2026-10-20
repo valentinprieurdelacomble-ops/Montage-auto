@@ -14,19 +14,45 @@ from pathlib import Path
 import numpy as np
 
 SR = 48000
-TEXTE = [
-    ("Tu", 0), ("veux", 0), ("parler", 0), ("avec", 0), ("charisme", 0), ("?", 1.4),
-    ("Arrête", 0), ("de", 0), ("remplir", 0), ("tes", 0), ("silences.", 1.1),
-    ("euh", 0.5), ("Le", 0), ("silence", 0), ("est", 0), ("ton", 0), ("meilleur", 0), ("allié.", 0.9),
-    ("Voici", 0), ("trois", 0), ("règles", 0), ("simples.", 1.2),
-    ("Un,", 0.3), ("ralentis", 0), ("ton", 0), ("débit.", 0.8),
-    ("Deux,", 0.3), ("regarde", 0), ("ton", 0), ("public", 0), ("dans", 0), ("les", 0), ("yeux.", 1.5),
-    ("euh", 0.6), ("Trois,", 0.3), ("fais", 0), ("une", 0), ("pause", 0), ("avant", 0), ("ta", 0),
-    ("phrase", 0), ("importante.", 1.0),
-    ("Quatre-vingts", 0), ("pour", 0), ("cent", 0), ("de", 0), ("ton", 0), ("impact", 0), ("vient", 0),
-    ("de", 0), ("ta", 0), ("voix,", 0.3), ("pas", 0), ("de", 0), ("tes", 0), ("mots.", 1.3),
-    ("Alors", 0), ("essaie", 0), ("dès", 0), ("aujourd'hui.", 0.8),
+# (phrase, blanc après la phrase en secondes). Contient de quoi déclencher chaque type d'insert.
+PHRASES = [
+    ("Tu veux parler avec charisme ?", 1.4),
+    ("Arrête de remplir tes silences.", 1.1),
+    ("euh", 0.5),
+    ("Le silence est ton meilleur allié.", 0.9),
+    ("Voici trois règles simples.", 1.0),
+    ("Un, ralentis ton débit.", 0.8),
+    ("Deux, regarde ton public dans les yeux.", 1.5),
+    ("euh", 0.6),
+    ("Trois, fais une pause avant ta phrase importante.", 1.2),
+    ("Au lieu de dire, je vais essayer, dis, je vais le faire.", 1.3),
+    ("Quatre-vingts pour cent de ton impact vient de ta voix, pas de tes mots.", 1.3),
+    ("Comme disait Boileau, ce que l'on conçoit bien s'énonce clairement.", 1.2),
+    ("Pour préparer un discours, voici la méthode.", 0.8),
+    ("D'abord, trouve ton message.", 0.7),
+    ("Ensuite, construis ton plan.", 0.7),
+    ("Enfin, répète à voix haute.", 1.2),
+    ("Alors essaie dès aujourd'hui.", 0.8),
 ]
+
+
+def _decouper(phrases):
+    sortie = []
+    for phrase, blanc in phrases:
+        mots = phrase.split()
+        for k, m in enumerate(mots):
+            if m == "?":
+                sortie.append(("?", blanc))
+            elif k == len(mots) - 1:
+                sortie.append((m, blanc))
+            elif mots[k + 1] == "?":
+                sortie.append((m, 0))
+            else:
+                sortie.append((m, 0.3 if m.endswith(",") else 0))
+    return sortie
+
+
+TEXTE = _decouper(PHRASES)
 
 
 def dire(mot: str, dossier: Path) -> np.ndarray:
