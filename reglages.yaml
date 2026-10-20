@@ -1,0 +1,96 @@
+# =====================================================================
+#  RÉGLAGES DU MONTAGE AUTOMATIQUE
+#  Tu peux modifier tous les chiffres ci-dessous avec le Bloc-notes.
+#  Règle d'or : ne change qu'une chose à la fois, puis relance un montage
+#  pour voir l'effet. Les lignes qui commencent par # sont des explications.
+# =====================================================================
+
+# --- Dossiers ----------------------------------------------------------
+dossiers:
+  entree: a_monter        # où tu déposes tes vidéos brutes
+  sortie: montees         # où arrivent les vidéos prêtes à publier
+  travail: travail        # fichiers intermédiaires (transcription, plan...)
+
+# --- Transcription (Whisper) ------------------------------------------
+transcription:
+  # Taille du modèle : tiny, base, small, medium, large-v3, large-v3-turbo
+  # Plus c'est gros, plus c'est précis… et plus c'est lent.
+  # "medium" = bon compromis sur un PC sans carte graphique NVIDIA.
+  modele: medium
+  langue: fr
+  appareil: auto          # auto, cpu ou cuda (carte NVIDIA)
+  # Mots que Whisper doit savoir écrire (ton nom, ton jargon…)
+  vocabulaire: "Éloquence, prise de parole, charisme, storytelling, pitch, Valentin de la Comble."
+
+# --- Coupes des blancs --------------------------------------------------
+coupes:
+  silence_min: 0.30       # un blanc plus long que ça (en secondes) est coupé
+  respiration: 0.12       # marge gardée avant et après chaque phrase (0.10 à 0.20)
+  # Sensibilité : un son plus faible que (niveau de ta voix - cette valeur)
+  # est considéré comme du silence. Monte à 40 si des fins de mots sont coupées,
+  # descends à 28 si des bruits de fond restent.
+  seuil_silence_db: 32
+  couper_hesitations: true   # enlève les "euh", "heu", "hum"…
+  mots_hesitation: [euh, euhh, heu, hum, hmm, bah, mmh]
+  duree_min_segment: 0.20  # un bout de son plus court que ça est ignoré (clic, souffle)
+
+# --- Sous-titres --------------------------------------------------------
+sous_titres:
+  taille: 96              # taille du texte (en pixels, sur une vidéo de 1080 de large)
+  mots_max: 3             # 1 à 3 mots affichés à la fois
+  caracteres_max: 14      # au-delà, on passe au groupe de mots suivant
+  position_verticale: 0.63   # 0 = tout en haut, 0.5 = milieu, 1 = tout en bas
+  majuscules: true
+  couleur: "#FFFFFF"
+  couleur_mot_cle: "#246BFD"
+  couleur_contour: "#111318"
+  epaisseur_contour: 5
+  ombre: 2
+  animation_pop: true     # petit "pop" d'apparition (discret)
+  police: "Inter Display ExtraBold"   # fichier dans assets/fonts
+
+# --- Zooms ----------------------------------------------------------------
+zooms:
+  actif: true
+  intensite_doux: 1.15    # zoom avant progressif (1.15 = 115 %)
+  intensite_punch: 1.12   # zoom sec "punch-in"
+  duree_transition: 0.35  # durée du zoom progressif (secondes)
+  duree_max: 3.5          # un zoom ne dure jamais plus que ça
+  intervalle_min: 5.0     # jamais deux zooms à moins de 5 s d'écart
+  intervalle_max: 8.0     # on essaie de ne pas rester plus de 8 s sans zoom
+  centre_vertical: 0.42   # point visé par le zoom (0.42 = un peu au-dessus du centre, là où est ton visage)
+
+# --- Bruitages (fichiers dans assets/sfx/whoosh et assets/sfx/pop) --------
+bruitages:
+  actif: true
+  # Niveau maximum de chaque bruitage, en dB (0 = le plus fort possible).
+  # Ta voix est vers -1 dB : à -18 dB, un bruitage est environ 8 fois moins fort.
+  volume_whoosh_db: -20
+  volume_pop_db: -22
+  whoosh_sur_zooms: 0.5   # proportion des zooms doux qui ont un whoosh (0 à 1)
+  pops_par_minute: 5      # maximum de "pop" sur des mots-clés par minute
+  ecart_min: 3.0          # secondes minimum entre deux bruitages
+
+# --- Animations (1 ou 2 maximum par vidéo) ----------------------------------
+animations:
+  max_par_video: 2
+  titre_accroche: auto    # auto, aucun, ou un texte entre guillemets ex: "3 ERREURS À ÉVITER"
+  duree_titre: 2.8        # secondes à l'écran
+  chiffre_geant: true     # fait apparaître en grand un chiffre important
+  couleur_fond_titre: "#111318"
+
+# --- Son de la voix ----------------------------------------------------------
+audio:
+  volume_cible_lufs: -14  # standard Instagram / TikTok
+  crete_max_db: -1.5      # jamais au-dessus : pas de saturation
+  compression: true       # niveau plus régulier
+  debruitage: false       # mets true si tu filmes dans un endroit bruyant
+
+# --- Export --------------------------------------------------------------------
+export:
+  largeur: 1080
+  hauteur: 1920
+  fps: 30
+  qualite_crf: 18         # 18 = très haute qualité (plus petit = meilleur et plus lourd)
+  preset: slow            # slow = meilleure compression ; "medium" = plus rapide
+  debit_audio: 192k
