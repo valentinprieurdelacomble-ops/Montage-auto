@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Valentin de la Comble · Prise de parole</title>
+  <meta name="description" content="Gagne en assurance à l'oral : pour un examen, au travail ou face à des inconnus. Réserve ton appel découverte gratuit de 20 minutes.">
+  <meta name="theme-color" content="#111318">
+
+  <!-- Typographie : Inter (Regular, Medium, ExtraBold) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       1. VARIABLES : charte graphique VDC
+       ========================================================= */
+    :root {
+      --anthracite: #111318;   /* fond principal */
+      --bleu:       #246BFD;   /* accent : boutons, mots-clés, traits */
+      --bleu-hover: #3D7DFF;   /* bleu légèrement éclairci au survol */
+      --blanc:      #FFFFFF;   /* titres et texte principal */
+      --casse:      #F3F6FC;   /* fond alternatif clair */
+      --gris:       #8B93A5;   /* texte secondaire */
+      --gris-fonce: #5A6274;   /* texte secondaire sur fond clair (contraste AA) */
+      --trait:      rgba(255, 255, 255, 0.10); /* bordures discrètes */
+
+      --gutter: 24px;          /* marge latérale mobile */
+      --max:    1080px;        /* largeur maximale du contenu */
+      --radius: 14px;
+    }
+
+    /* =========================================================
+       2. BASE
+       ========================================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 17px;
+      line-height: 1.6;
+      font-weight: 400;
+      color: var(--blanc);
+      background: var(--anthracite);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { display: block; max-width: 100%; }
+
+    .container {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    section { padding: 96px 0; }
+
+    /* Titres : ExtraBold, capitales, compacts */
+    h1, h2, h3 {
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+    }
+    h1 { font-size: clamp(3rem, 15vw, 7.5rem); }
+    h2 { font-size: clamp(2rem, 9vw, 3.75rem); margin-bottom: 48px; }
+    h3 { font-size: 1.25rem; line-height: 1.15; letter-spacing: -0.01em; }
+
+    /* Mot-clé en bleu (un ou deux mots maximum par titre) */
+    .accent { color: var(--bleu); }
+
+    /* Petite étiquette au-dessus des titres, précédée d'un trait bleu */
+    .label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: 20px;
+    }
+    .label::before {
+      content: "";
+      width: 32px;
+      height: 2px;
+      background: var(--bleu);
+    }
+
+    /* =========================================================
+       3. BOUTON UNIQUE : « Réserver mon appel gratuit »
+       ========================================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-height: 60px;              /* cible confortable pour le pouce */
+      padding: 18px 32px;
+      width: 100%;
+      max-width: 380px;
+      font-family: inherit;
+      font-size: 1.0625rem;
+      font-weight: 800;
+      color: var(--blanc);
+      text-decoration: none;
+      background: var(--bleu);
+      border-radius: 999px;
+      transition: background-color 0.25s ease, transform 0.25s ease;
+    }
+    .btn svg { transition: transform 0.25s ease; }
+    .btn:hover { background: var(--bleu-hover); transform: translateY(-2px); }
+    .btn:hover svg { transform: translateX(4px); }
+    .btn:active { transform: translateY(0); }
+    .btn:focus-visible { outline: 3px solid var(--blanc); outline-offset: 4px; }
+
+    .btn-note {
+      margin-top: 14px;
+      font-size: 0.9375rem;
+      color: var(--gris);
+    }
+
+    /* =========================================================
+       4. HERO
+       ========================================================= */
+    .hero {
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      padding: 72px 0;
+    }
+    .hero h1 { margin-bottom: 28px; }
+    .hero p {
+      max-width: 34ch;
+      font-size: 1.1875rem;
+      font-weight: 500;
+      color: var(--gris);
+      margin-bottom: 40px;
+    }
+    .hero p strong { color: var(--blanc); font-weight: 500; }
+
+    /* =========================================================
+       5. « C'EST POUR TOI SI… » : cartes de situations
+       ========================================================= */
+    .cards {
+      display: grid;
+      gap: 16px;
+      list-style: none;
+    }
+    .card {
+      padding: 32px 28px;
+      border: 1px solid var(--trait);
+      border-top: 2px solid var(--bleu);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .card-num {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      color: var(--gris);
+      margin-bottom: 20px;
+    }
+    .card p { margin-top: 12px; color: var(--gris); }
+
+    /* =========================================================
+       6. « COMMENT ÇA SE PASSE » : fond blanc cassé
+       ========================================================= */
+    .light {
+      background: var(--casse);
+      color: var(--anthracite);
+    }
+    .light .label { color: var(--gris-fonce); }
+
+    .steps { display: grid; gap: 40px; list-style: none; }
+    .step { display: flex; flex-direction: column; gap: 12px; }
+
+    /* Grands chiffres en contour */
+    .step-num {
+      font-size: clamp(4.5rem, 22vw, 7rem);
+      font-weight: 800;
+      line-height: 0.85;
+      letter-spacing: -0.04em;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--bleu);
+    }
+    .step p { color: var(--gris-fonce); max-width: 32ch; }
+
+    /* =========================================================
+       7. « QUI SUIS-JE »
+       ========================================================= */
+    .about-grid { display: grid; gap: 40px; align-items: center; }
+
+    .photo {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--bleu);
+      background: #1C1F27;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gris);
+      font-size: 0.875rem;
+      text-align: center;
+    }
+    .photo img { width: 100%; height: 100%; object-fit: cover; }
+
+    .about h2 { margin-bottom: 28px; }
+    .about-text p + p { margin-top: 16px; }
+    .about-text p { color: var(--gris); }
+    .about-text .lead { color: var(--blanc); font-weight: 500; font-size: 1.125rem; }
+
+    /* =========================================================
+       8. RAPPEL FINAL
+       ========================================================= */
+    .final {
+      text-align: center;
+      border-top: 1px solid var(--trait);
+    }
+    .final h2 { margin-bottom: 20px; }
+    .final .sub { color: var(--gris); margin-bottom: 40px; }
+    .final .btn-note { margin-left: auto; margin-right: auto; }
+
+    /* =========================================================
+       9. PIED DE PAGE
+       ========================================================= */
+    footer {
+      padding: 32px 0 40px;
+      border-top: 1px solid var(--trait);
+      font-size: 0.875rem;
+      color: var(--gris);
+    }
+    footer .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    footer a { color: var(--gris); text-underline-offset: 3px; }
+    footer a:hover { color: var(--blanc); }
+
+    /* =========================================================
+       10. ANIMATION : léger fade-in au scroll
+       ========================================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* Sans JavaScript, tout reste visible */
+    .no-js .reveal { opacity: 1; transform: none; }
+
+    /* Respect des préférences « réduire les animations » */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal, .btn, .btn svg { transition: none; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* =========================================================
+       11. ÉCRANS PLUS LARGES (tablette, ordinateur)
+       ========================================================= */
+    @media (min-width: 760px) {
+      :root { --gutter: 48px; }
+      section { padding: 140px 0; }
+      .btn { width: auto; }
+      .cards, .steps { grid-template-columns: repeat(3, 1fr); }
+      .about-grid { grid-template-columns: 260px 1fr; gap: 72px; }
+      .photo { width: 260px; height: 260px; }
+    }
+  </style>
+</head>
+
+<body class="no-js">
+
+  <main>
+
+    <!-- =====================================================
+         1. HERO
+         ===================================================== -->
+    <section class="hero">
+      <div class="container">
+        <span class="label reveal">Valentin de la Comble · Prise de parole</span>
+        <h1 class="reveal">Ta voix<br>a du <span class="accent">poids.</span></h1>
+        <p class="reveal">
+          Gagne en assurance à l'oral : pour un examen, au travail ou face à des inconnus.
+        </p>
+        <div class="reveal">
+          <a class="btn js-booking" href="#">Réserver mon appel gratuit
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <p class="btn-note">20 minutes, en visio, sans engagement.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         2. C'EST POUR TOI SI…
+         ===================================================== -->
+    <section>
+      <div class="container">
+        <span class="label reveal">Pour qui</span>
+        <h2 class="reveal">C'est pour <span class="accent">toi</span> si…</h2>
+
+        <ul class="cards">
+          <li class="card reveal">
+            <span class="card-num">01</span>
+            <h3>Un oral ou un entretien approche.</h3>
+            <p>Tu veux arriver prêt, clair et posé le jour J.</p>
+          </li>
+          <li class="card reveal">
+            <span class="card-num">02</span>
+            <h3>Tu perds tes moyens devant un groupe.</h3>
+            <p>En réunion ou face à un public, les mots ne sortent pas comme tu le voudrais.</p>
+          </li>
+          <li class="card reveal">
+            <span class="card-num">03</span>
+            <h3>Tu veux convaincre et créer du lien.</h3>
+            <p>Être plus à l'aise pour défendre tes idées et aller vers les autres.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         3. COMMENT ÇA SE PASSE (fond blanc cassé)
+         ===================================================== -->
+    <section class="light">
+      <div class="container">
+        <span class="label reveal">Le déroulé</span>
+        <h2 class="reveal">Comment ça se <span class="accent">passe</span></h2>
+
+        <ol class="steps">
+          <li class="step reveal">
+            <span class="step-num" aria-hidden="true">01</span>
+            <h3>Tu réserves</h3>
+            <p>Un appel gratuit de 20 minutes, au créneau qui t'arrange.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step-num" aria-hidden="true">02</span>
+            <h3>On fait le point</h3>
+            <p>Sur ton besoin, ta situation et l'objectif que tu veux atteindre.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step-num" aria-hidden="true">03</span>
+            <h3>On avance ensemble</h3>
+            <p>Si ça colle, je te propose un accompagnement adapté, en individuel et en visio.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         4. QUI SUIS-JE
+         ===================================================== -->
+    <section class="about">
+      <div class="container about-grid">
+
+        <!-- PHOTO : remplace le texte ci-dessous par
+             <img src="photo.jpg" alt="Valentin de la Comble">
+             (photo carrée de préférence, placée à côté de index.html) -->
+        <div class="photo reveal">Ta photo ici</div>
+
+        <div class="about-text">
+          <span class="label reveal">Qui suis-je</span>
+          <h2 class="reveal">Valentin de <span class="accent">la Comble</span></h2>
+
+          <!-- TEXTE DE PRÉSENTATION : provisoire, à personnaliser -->
+          <p class="lead reveal">
+            Qualifié aux Championnats de France d'éloquence, je sais ce que c'est d'avoir le trac avant de prendre la parole.
+          </p>
+          <p class="reveal">
+            L'aisance à l'oral n'est pas un don : ça se travaille, avec de la méthode et de la pratique.
+            J'accompagne en individuel, en visio, celles et ceux qui veulent parler avec plus d'assurance et d'impact.
+          </p>
+          <p class="reveal">
+            Mon approche est simple : partir de qui tu es, pas te transformer en quelqu'un d'autre.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =====================================================
+         5. RAPPEL FINAL
+         ===================================================== -->
+    <section class="final">
+      <div class="container">
+        <span class="label reveal" style="justify-content:center">Phase de lancement</span>
+        <h2 class="reveal">Prêt à te <span class="accent">lancer&nbsp;?</span></h2>
+        <p class="sub reveal">Places limitées pendant la phase de lancement.</p>
+        <div class="reveal">
+          <a class="btn js-booking" href="#">Réserver mon appel gratuit
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <p class="btn-note">20 minutes offertes, sans engagement.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =====================================================
+       6. PIED DE PAGE
+       ===================================================== -->
+  <footer>
+    <div class="container">
+      <span>© Valentin de la Comble</span>
+      <!-- MENTIONS LÉGALES : ajoute l'adresse de la page dans href -->
+      <a href="#">Mentions légales</a>
+    </div>
+  </footer>
+
+  <script>
+    /* LIEN CALENDLY : à modifier ici uniquement */
+    const BOOKING_URL = "https://calendly.com/contact-valentindlc/30min";
+
+    /* Tous les boutons de réservation pointent vers ce lien,
+       dans un nouvel onglet */
+    document.querySelectorAll(".js-booking").forEach(function (btn) {
+      btn.href = BOOKING_URL;
+      btn.target = "_blank";
+      btn.rel = "noopener";
+    });
+
+    /* Fade-in discret des éléments au scroll */
+    document.body.classList.remove("no-js");
+    const items = document.querySelectorAll(".reveal");
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+
+      items.forEach(function (el) { observer.observe(el); });
+    } else {
+      items.forEach(function (el) { el.classList.add("visible"); });
+    }
+  </script>
+
+</body>
+</html>
