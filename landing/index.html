@@ -243,7 +243,36 @@
     .final .btn-note { margin-left: auto; margin-right: auto; }
 
     /* =========================================================
-       9. PIED DE PAGE
+       9. MENTIONS LÉGALES (vue intégrée, affichée via #mentions-legales)
+       ========================================================= */
+    .legal-view { padding: 24px 0 96px; }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      min-height: 48px;              /* cible confortable pour le pouce */
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--gris);
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+    .back:hover { color: var(--blanc); }
+    .back:focus-visible { outline: 3px solid var(--blanc); outline-offset: 4px; }
+
+    .legal { max-width: 65ch; }
+    .legal h1 { font-size: clamp(2.5rem, 12vw, 5rem); margin-bottom: 56px; }
+    .legal h2 { font-size: 1.375rem; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 16px; }
+    .legal section { padding: 32px 0; border-top: 1px solid var(--trait); }
+    .legal p { color: var(--gris); }
+    .legal p + p { margin-top: 12px; }
+    .legal a { color: var(--blanc); text-underline-offset: 3px; }
+    .legal a:hover { color: var(--bleu-hover); }
+
+    [hidden] { display: none !important; }
+
+    /* =========================================================
+       10. PIED DE PAGE
        ========================================================= */
     footer {
       padding: 32px 0 40px;
@@ -261,7 +290,7 @@
     footer a:hover { color: var(--blanc); }
 
     /* =========================================================
-       10. ANIMATION : léger fade-in au scroll
+       11. ANIMATION : léger fade-in au scroll
        ========================================================= */
     .reveal {
       opacity: 0;
@@ -276,12 +305,12 @@
     /* Respect des préférences « réduire les animations » */
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .reveal, .btn, .btn svg { transition: none; }
+      .reveal, .btn, .btn svg, .back { transition: none; }
       .reveal { opacity: 1; transform: none; }
     }
 
     /* =========================================================
-       11. ÉCRANS PLUS LARGES (tablette, ordinateur)
+       12. ÉCRANS PLUS LARGES (tablette, ordinateur)
        ========================================================= */
     @media (min-width: 760px) {
       :root { --gutter: 48px; }
@@ -289,6 +318,7 @@
       .btn { width: auto; }
       .cards, .steps { grid-template-columns: repeat(3, 1fr); }
       .about-grid { grid-template-columns: 260px 1fr; gap: 72px; }
+      .legal-view { padding: 48px 0 140px; }
       .photo { width: 260px; height: 260px; }
     }
   </style>
@@ -443,12 +473,53 @@
   </main>
 
   <!-- =====================================================
+       MENTIONS LÉGALES : vue cachée, affichée quand l'adresse
+       se termine par #mentions-legales (lien du pied de page)
+       ===================================================== -->
+  <div id="mentions-legales" class="legal-view" hidden>
+    <div class="container">
+
+      <a class="back" href="#">← Retour</a>
+
+      <div class="legal">
+        <h1>Mentions légales</h1>
+
+        <section>
+          <h2>Éditeur du site</h2>
+          <p>Valentin de la Comble, particulier.</p>
+          <p>Contact : <a href="mailto:contact.valentindlc@gmail.com">contact.valentindlc@gmail.com</a></p>
+          <p>Directeur de la publication : Valentin de la Comble.</p>
+        </section>
+
+        <section>
+          <h2>Hébergeur</h2>
+          <p>Netlify, Inc.<br>101 2nd Street, San Francisco, CA 94105, États-Unis</p>
+          <p>Site : <a href="https://www.netlify.com" target="_blank" rel="noopener">www.netlify.com</a></p>
+        </section>
+
+        <section>
+          <h2>Données personnelles</h2>
+          <p>Ce site ne collecte aucune donnée directement et n'utilise pas de cookies de suivi.</p>
+          <p>La réservation d'un appel passe par Calendly. Les informations que tu y saisis (nom, email, réponses aux questions) servent uniquement à organiser l'appel découverte. Elles ne sont ni revendues ni utilisées à d'autres fins.</p>
+          <p>Tu peux demander à consulter ou à supprimer tes données en écrivant à <a href="mailto:contact.valentindlc@gmail.com">contact.valentindlc@gmail.com</a>. Tu peux aussi adresser une réclamation à la CNIL (<a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>).</p>
+        </section>
+
+        <section>
+          <h2>Propriété intellectuelle</h2>
+          <p>Les textes, photos et vidéos de ce site appartiennent à Valentin de la Comble. Toute reproduction sans autorisation est interdite.</p>
+        </section>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =====================================================
        6. PIED DE PAGE
        ===================================================== -->
   <footer>
     <div class="container">
       <span>© Valentin de la Comble</span>
-      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="#mentions-legales">Mentions légales</a>
     </div>
   </footer>
 
@@ -463,6 +534,20 @@
       btn.target = "_blank";
       btn.rel = "noopener";
     });
+
+    /* Mentions légales : la même page affiche soit l'accueil, soit
+       les mentions légales, selon la fin de l'adresse (#mentions-legales) */
+    const pageAccueil = document.querySelector("main");
+    const pageMentions = document.getElementById("mentions-legales");
+
+    function afficherVue() {
+      const mentions = location.hash === "#mentions-legales";
+      pageAccueil.hidden = mentions;
+      pageMentions.hidden = !mentions;
+      window.scrollTo(0, 0);
+    }
+    window.addEventListener("hashchange", afficherVue);
+    if (location.hash === "#mentions-legales") afficherVue();
 
     /* Fade-in discret des éléments au scroll */
     document.body.classList.remove("no-js");
