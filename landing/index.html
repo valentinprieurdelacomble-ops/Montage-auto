@@ -193,9 +193,15 @@
       font-size: clamp(4.5rem, 22vw, 7rem);
       font-weight: 800;
       line-height: 0.85;
-      letter-spacing: -0.04em;
-      color: transparent;
-      -webkit-text-stroke: 2px var(--bleu);
+      letter-spacing: 0;
+      /* Contour sans artefact : sur iPhone (Safari), le tracé du « 2 »
+         d'Inter se chevauche et un trait parasite apparaît à l'intérieur.
+         On trace un contour plus épais, puis on remplit le chiffre avec
+         la couleur du fond par-dessus : seul le contour extérieur reste
+         visible. */
+      color: var(--casse);
+      -webkit-text-stroke: 3px var(--bleu);
+      paint-order: stroke fill;
     }
     .step p { color: var(--gris-fonce); max-width: 32ch; }
 
@@ -442,8 +448,7 @@
   <footer>
     <div class="container">
       <span>© Valentin de la Comble</span>
-      <!-- MENTIONS LÉGALES : ajoute l'adresse de la page dans href -->
-      <a href="#">Mentions légales</a>
+      <a href="mentions-legales.html">Mentions légales</a>
     </div>
   </footer>
 

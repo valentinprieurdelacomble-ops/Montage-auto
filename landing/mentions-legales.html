@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mentions légales · Valentin de la Comble</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#111318">
+
+  <!-- Typographie : Inter (Regular, Medium, ExtraBold) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       1. VARIABLES : charte graphique VDC (identiques à index.html)
+       ========================================================= */
+    :root {
+      --anthracite: #111318;   /* fond principal */
+      --bleu:       #246BFD;   /* accent : boutons, mots-clés, traits */
+      --bleu-hover: #3D7DFF;   /* bleu légèrement éclairci au survol */
+      --blanc:      #FFFFFF;   /* titres et texte principal */
+      --casse:      #F3F6FC;   /* fond alternatif clair */
+      --gris:       #8B93A5;   /* texte secondaire */
+      --gris-fonce: #5A6274;   /* texte secondaire sur fond clair (contraste AA) */
+      --trait:      rgba(255, 255, 255, 0.10); /* bordures discrètes */
+
+      --gutter: 24px;          /* marge latérale mobile */
+      --max:    1080px;        /* largeur maximale du contenu */
+      --radius: 14px;
+    }
+
+    /* =========================================================
+       2. BASE
+       ========================================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 17px;
+      line-height: 1.6;
+      font-weight: 400;
+      color: var(--blanc);
+      background: var(--anthracite);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    /* Titres : ExtraBold, capitales, compacts */
+    h1, h2 {
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+    }
+    h1 { font-size: clamp(2.5rem, 12vw, 5rem); margin-bottom: 56px; }
+    h2 { font-size: 1.375rem; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 16px; }
+
+    /* =========================================================
+       3. LIEN RETOUR
+       ========================================================= */
+    .back {
+      display: inline-flex;
+      align-items: center;
+      min-height: 48px;              /* cible confortable pour le pouce */
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--gris);
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+    .back:hover { color: var(--blanc); }
+    .back:focus-visible { outline: 3px solid var(--blanc); outline-offset: 4px; }
+
+    /* =========================================================
+       4. CONTENU
+       ========================================================= */
+    main { padding: 24px 0 96px; }
+
+    .legal { max-width: 65ch; }
+    .legal section { padding: 32px 0; border-top: 1px solid var(--trait); }
+    .legal p { color: var(--gris); }
+    .legal p + p { margin-top: 12px; }
+    .legal a { color: var(--blanc); text-underline-offset: 3px; }
+    .legal a:hover { color: var(--bleu-hover); }
+
+    /* =========================================================
+       5. PIED DE PAGE (identique à index.html)
+       ========================================================= */
+    footer {
+      padding: 32px 0 40px;
+      border-top: 1px solid var(--trait);
+      font-size: 0.875rem;
+      color: var(--gris);
+    }
+    footer .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    footer a { color: var(--gris); text-underline-offset: 3px; }
+    footer a:hover { color: var(--blanc); }
+
+    /* =========================================================
+       6. ÉCRANS PLUS LARGES
+       ========================================================= */
+    @media (min-width: 760px) {
+      :root { --gutter: 48px; }
+      main { padding: 48px 0 140px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .back { transition: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main>
+    <div class="container">
+
+      <a class="back" href="index.html">← Retour</a>
+
+      <div class="legal">
+        <h1>Mentions légales</h1>
+
+        <section>
+          <h2>Éditeur du site</h2>
+          <p>Valentin de la Comble, particulier.</p>
+          <p>Contact : <a href="mailto:contact.valentindlc@gmail.com">contact.valentindlc@gmail.com</a></p>
+          <p>Directeur de la publication : Valentin de la Comble.</p>
+        </section>
+
+        <section>
+          <h2>Hébergeur</h2>
+          <p>Netlify, Inc.<br>101 2nd Street, San Francisco, CA 94105, États-Unis</p>
+          <p>Site : <a href="https://www.netlify.com" target="_blank" rel="noopener">www.netlify.com</a></p>
+        </section>
+
+        <section>
+          <h2>Données personnelles</h2>
+          <p>Ce site ne collecte aucune donnée directement et n'utilise pas de cookies de suivi.</p>
+          <p>La réservation d'un appel passe par Calendly. Les informations que tu y saisis (nom, email, réponses aux questions) servent uniquement à organiser l'appel découverte. Elles ne sont ni revendues ni utilisées à d'autres fins.</p>
+          <p>Tu peux demander à consulter ou à supprimer tes données en écrivant à <a href="mailto:contact.valentindlc@gmail.com">contact.valentindlc@gmail.com</a>. Tu peux aussi adresser une réclamation à la CNIL (<a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>).</p>
+        </section>
+
+        <section>
+          <h2>Propriété intellectuelle</h2>
+          <p>Les textes, photos et vidéos de ce site appartiennent à Valentin de la Comble. Toute reproduction sans autorisation est interdite.</p>
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- PIED DE PAGE -->
+  <footer>
+    <div class="container">
+      <span>© Valentin de la Comble</span>
+      <a href="mentions-legales.html">Mentions légales</a>
+    </div>
+  </footer>
+
+</body>
+</html>
